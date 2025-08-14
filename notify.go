@@ -19,7 +19,7 @@
 
 package notify
 
-var defaultTree = newTree()
+var defaultTree Tree
 
 // Watch sets up a watchpoint on path listening for events given by the events
 // argument.
@@ -61,6 +61,9 @@ var defaultTree = newTree()
 // e.g. use persistent paths like %userprofile% or watch additionally parent
 // directory of a recursive watchpoint in order to receive delete events for it.
 func Watch(path string, c chan<- EventInfo, events ...Event) error {
+	if defaultTree == nil {
+		defaultTree = NewTree()
+	}
 	return defaultTree.Watch(path, c, events...)
 }
 
@@ -70,5 +73,8 @@ func Watch(path string, c chan<- EventInfo, events ...Event) error {
 // Stop does not close c. When Stop returns, it is guaranteed that c will
 // receive no more signals.
 func Stop(c chan<- EventInfo) {
+	if defaultTree == nil {
+		defaultTree = NewTree()
+	}
 	defaultTree.Stop(c)
 }
