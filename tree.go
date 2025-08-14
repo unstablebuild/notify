@@ -6,13 +6,16 @@ package notify
 
 const buffer = 128
 
-type tree interface {
+// Tree abstracts the ability to start and stop watching a path recursively.
+type Tree interface {
 	Watch(string, chan<- EventInfo, ...Event) error
 	Stop(chan<- EventInfo)
 	Close() error
 }
 
-func newTree() tree {
+// NewTree allocates a new tree and initializes it with the best file system
+// notification facility available in the system.
+func NewTree() Tree {
 	c := make(chan EventInfo, buffer)
 	w := newWatcher(c)
 	if rw, ok := w.(recursiveWatcher); ok {
