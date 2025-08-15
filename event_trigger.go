@@ -20,4 +20,4 @@ func (e *event) Path() string { return e.p }
 
 func (e *event) Sys() interface{} { return e.pe }
 
-func (e *event) isDir() (bool, error) { return e.d, nil }
+func (e *event) IsDir() (bool, error) { return e.d, nil }
